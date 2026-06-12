@@ -1,0 +1,32 @@
+import com.peknight.build.gav.*
+import com.peknight.build.sbt.*
+
+commonSettings
+
+lazy val infisical = (project in file("."))
+  .settings(name := "infisical")
+  .aggregate(
+    infisicalCore.jvm,
+    infisicalCore.js,
+    infisicalApi.jvm,
+    infisicalApi.js,
+    infisicalHttp4s.jvm,
+    infisicalHttp4s.js,
+  )
+
+lazy val infisicalCore = (crossProject(JVMPlatform, JSPlatform) in file("infisical-core"))
+  .settings(name := "infisical-core")
+  .settings(crossDependencies(
+  ))
+
+lazy val infisicalApi = (crossProject(JVMPlatform, JSPlatform) in file("infisical-api"))
+  .dependsOn(infisicalCore)
+  .settings(name := "infisical-api")
+  .settings(crossDependencies(
+  ))
+
+lazy val infisicalHttp4s = (crossProject(JVMPlatform, JSPlatform) in file("infisical-http4s"))
+  .dependsOn(infisicalApi)
+  .settings(name := "infisical-http4s")
+  .settings(crossDependencies(
+  ))

@@ -1,0 +1,8 @@
+package com.peknight.infisical.secret
+
+import com.peknight.infisical.{EnvironmentSlug, ProjectId, SecretName, SecretPath}
+
+case class DeleteSecretRequest(secretName: SecretName, projectId: ProjectId, environment: EnvironmentSlug,
+                               secretPath: Option[SecretPath] = None):
+  def query: SecretQuery = SecretQuery(projectId, environment, secretPath)
+end DeleteSecretRequest

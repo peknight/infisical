@@ -17,16 +17,23 @@ lazy val infisical = (project in file("."))
 lazy val infisicalCore = (crossProject(JVMPlatform, JSPlatform) in file("infisical-core"))
   .settings(name := "infisical-core")
   .settings(crossDependencies(
+    peknight.auth,
+    peknight.codec,
+    peknight.error,
+    peknight.query,
   ))
 
 lazy val infisicalApi = (crossProject(JVMPlatform, JSPlatform) in file("infisical-api"))
   .dependsOn(infisicalCore)
   .settings(name := "infisical-api")
-  .settings(crossDependencies(
-  ))
 
 lazy val infisicalHttp4s = (crossProject(JVMPlatform, JSPlatform) in file("infisical-http4s"))
   .dependsOn(infisicalApi)
   .settings(name := "infisical-http4s")
   .settings(crossDependencies(
+    http4s.client,
+    peknight.auth.http4s,
+    peknight.codec.http4s,
+    peknight.codec.http4s.circe,
+    peknight.query.http4s,
   ))

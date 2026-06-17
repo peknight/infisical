@@ -1,4 +1,4 @@
-package com.peknight.infisical.secret
+package com.peknight.infisical.secret.api
 
 import cats.{Monad, Show}
 import com.peknight.codec.Codec

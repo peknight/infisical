@@ -1,4 +1,4 @@
-package com.peknight.infisical.auth
+package com.peknight.infisical.auth.api
 
 import cats.{Monad, Show}
 import com.peknight.auth.Token

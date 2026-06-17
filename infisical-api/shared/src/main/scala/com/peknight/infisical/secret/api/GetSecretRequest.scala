@@ -1,4 +1,4 @@
-package com.peknight.infisical.secret
+package com.peknight.infisical.secret.api
 
 import com.peknight.infisical.{EnvironmentSlug, ProjectId, SecretName, SecretPath}
 

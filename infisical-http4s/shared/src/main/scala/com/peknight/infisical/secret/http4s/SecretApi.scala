@@ -8,15 +8,15 @@ import com.peknight.codec.http4s.circe.instances.entityDecoder.given
 import com.peknight.codec.http4s.circe.instances.entityEncoder.given
 import com.peknight.codec.http4s.instances.segmentEncoder.given
 import com.peknight.infisical.config.given
-import com.peknight.infisical.secret.{CreateSecretRequest, DeleteSecretRequest, GetSecretRequest, SecretQuery, UpdateSecretRequest, api}
-import com.peknight.infisical.{DeletedSecretResponse, SecretName, SecretResponse}
+import com.peknight.infisical.secret.api.{CreateSecretRequest, DeleteSecretRequest, DeletedSecretResponse, GetSecretRequest, SecretQuery, SecretResponse, UpdateSecretRequest}
+import com.peknight.infisical.SecretName
 import com.peknight.query.http4s.syntax.id.uri.withQuery
 import org.http4s.Method.{DELETE, GET, PATCH, POST}
 import org.http4s.client.Client
 import org.http4s.client.dsl.Http4sClientDsl
 import org.http4s.{Headers, Uri}
 
-class SecretApi[F[_]: Concurrent](baseUri: Uri, token: Token)(using client: Client[F]) extends api.SecretApi[F]:
+class SecretApi[F[_]: Concurrent](baseUri: Uri, token: Token)(using client: Client[F]) extends com.peknight.infisical.secret.api.SecretApi[F]:
   private val dsl: Http4sClientDsl[F] = Http4sClientDsl[F]
   import dsl.*
 

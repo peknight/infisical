@@ -11,4 +11,5 @@ case class SecretResponse(secret: Secret)
 object SecretResponse:
   given codecSecretResponse[F[_]: Monad, S: {ObjectType, NullType, NumberType, StringType, Show}]
   : Codec[F, S, Cursor[S], SecretResponse] = Codec.derived[F, S, SecretResponse]
+  given showSecretResponse: Show[SecretResponse] = Show.fromToString[SecretResponse]
 end SecretResponse

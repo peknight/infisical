@@ -35,3 +35,14 @@ lazy val infisicalHttp4s = (crossProject(JVMPlatform, JSPlatform) in file("infis
     peknight.codec.http4s.circe,
     peknight.query.http4s,
   ))
+  .settings(crossTestDependencies(
+      http4s.ember.client,
+      peknight.logging,
+      peknight.logging.logback.config,
+      scalaTest.flatSpec,
+      typelevel.catsEffect.testingScalaTest,
+  ))
+  .jvmSettings(libraryDependencies ++= Seq(
+      testDependency(typelevel.log4Cats.slf4j),
+      jvmTestDependency(logback.classic),
+  ))

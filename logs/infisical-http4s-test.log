@@ -1,0 +1,85 @@
+2026-06-18T13:52:43.749+08:00|            io-compute-6|ERROR|      c.p.i.http4s.SecretApiFlatSpec||SecretApiFlatSpec#getSecret|755millis#755233114|InvalidMessageBodyFailure|InvalidMessageBodyFailure: Invalid message body: Could not decode JSON: {
+  "secret" : {
+    "id" : "4f5d1aba-988e-4c6f-b137-b887670ec865",
+    "_id" : "4f5d1aba-988e-4c6f-b137-b887670ec865",
+    "workspace" : "e1bd9423-2ba2-456f-96a8-e78893991237",
+    "environment" : "dev",
+    "version" : 1,
+    "type" : "shared",
+    "secretKey" : "TEST_TOKEN",
+    "secretValue" : "123456",
+    "secretComment" : "测试TOKEN(开发环境)",
+    "secretReminderNote" : null,
+    "secretReminderRepeatDays" : null,
+    "skipMultilineEncoding" : false,
+    "createdAt" : "2026-06-18T05:23:39.872Z",
+    "updatedAt" : "2026-06-18T05:23:39.872Z",
+    "secretValueHidden" : false,
+    "secretPath" : "/test",
+    "tags" : [
+      {
+        "id" : "63ea37c2-d891-4370-8fa3-5db1d611b5a7",
+        "slug" : "test",
+        "color" : "",
+        "name" : "test"
+      },
+      {
+        "id" : "1fc1cb2c-75ac-43d8-a0c6-cf2aeed05e9c",
+        "slug" : "token",
+        "color" : "",
+        "name" : "token"
+      }
+    ],
+    "secretMetadata" : [
+    ]
+  }
+}||GetSecretRequest(SecretName(TEST_TOKEN),ProjectId(e1bd9423-2ba2-456f-96a8-e78893991237),EnvironmentSlug(dev),Some(SecretPath(/test)))||
+org.http4s.InvalidMessageBodyFailure: Invalid message body: Could not decode JSON: {
+  "secret" : {
+    "id" : "4f5d1aba-988e-4c6f-b137-b887670ec865",
+    "_id" : "4f5d1aba-988e-4c6f-b137-b887670ec865",
+    "workspace" : "e1bd9423-2ba2-456f-96a8-e78893991237",
+    "environment" : "dev",
+    "version" : 1,
+    "type" : "shared",
+    "secretKey" : "TEST_TOKEN",
+    "secretValue" : "123456",
+    "secretComment" : "测试TOKEN(开发环境)",
+    "secretReminderNote" : null,
+    "secretReminderRepeatDays" : null,
+    "skipMultilineEncoding" : false,
+    "createdAt" : "2026-06-18T05:23:39.872Z",
+    "updatedAt" : "2026-06-18T05:23:39.872Z",
+    "secretValueHidden" : false,
+    "secretPath" : "/test",
+    "tags" : [
+      {
+        "id" : "63ea37c2-d891-4370-8fa3-5db1d611b5a7",
+        "slug" : "test",
+        "color" : "",
+        "name" : "test"
+      },
+      {
+        "id" : "1fc1cb2c-75ac-43d8-a0c6-cf2aeed05e9c",
+        "slug" : "token",
+        "color" : "",
+        "name" : "token"
+      }
+    ],
+    "secretMetadata" : [
+    ]
+  }
+}
+	at org.http4s.InvalidMessageBodyFailure$.apply(MessageFailure.scala:118)
+	at org.http4s.circe.CirceInstances$.org$http4s$circe$CirceInstances$$$jsonDecodeErrorHelper(CirceInstances.scala:284)
+	at org.http4s.circe.CirceInstances$.defaultJsonDecodeError$$anonfun$1(CirceInstances.scala:271)
+	at org.http4s.circe.CirceInstances.jsonOfWithMediaHelper$$anonfun$1$$anonfun$1(CirceInstances.scala:117)
+	at scala.util.Either.fold(Either.scala:201)
+	at org.http4s.circe.CirceInstances.jsonOfWithMediaHelper$$anonfun$1(CirceInstances.scala:118)
+	at cats.data.EitherT.flatMap$$anonfun$1(EitherT.scala:446)
+	at apply$extension @ org.http4s.DecodeResult$.success(DecodeResult.scala:28)
+	at subflatMap @ org.http4s.circe.CirceInstances.jsonDecoderByteBufferImpl(CirceInstances.scala:65)
+	at flatMap @ com.peknight.infisical.http4s.SecretApiFlatSpec.testFun$proxy1$1$$anonfun$1(SecretApiFlatSpec.scala:52)
+	at rethrow @ org.http4s.Media$InvariantOps$.as$extension(Media.scala:75)
+	at >>$extension @ org.typelevel.keypool.KeyPool$Builder.keepRunning$2(KeyPool.scala:337)
+Caused by: DecodingFailure at .secret.secretName: Missing required field

@@ -1,17 +1,19 @@
 package com.peknight.infisical.http4s
 
-import cats.data.EitherT
 import cats.effect.IO
 import cats.effect.testing.scalatest.AsyncIOSpec
 import cats.syntax.option.*
 import com.peknight.auth.Token
 import com.peknight.error.syntax.applicativeError.asET
-import com.peknight.infisical.api.secret.{GetSecretRequest, SecretQuery}
+import com.peknight.infisical.api.secret.GetSecretRequest
 import com.peknight.infisical.{EnvironmentSlug, ProjectId, SecretName, SecretPath}
+import com.peknight.logging.syntax.eitherT.log
 import org.http4s.client.Client
 import org.http4s.ember.client.EmberClientBuilder
 import org.http4s.implicits.uri
 import org.scalatest.flatspec.AsyncFlatSpec
+import org.typelevel.log4cats.Logger
+import org.typelevel.log4cats.slf4j.Slf4jLogger
 
 /**
  * Infisical Secret API 连通性测试
@@ -32,26 +34,22 @@ class SecretApiFlatSpec extends AsyncFlatSpec with AsyncIOSpec:
   val secretPath = SecretPath("/test")
 
   "Infisical SecretApi getSecret" should "successfully read a secret from /test path" in {
-    val testSecretName = SecretName("TEST_SECRET")
+    val testSecretName = SecretName("TEST_TOKEN")
     val request = GetSecretRequest(testSecretName, projectId, environment, secretPath.some)
-
-    EmberClientBuilder.default[IO].build.use { client =>
-      given Client[IO] = client
-      val eitherT = for
-        secretApi = SecretApi[IO](infisicalUri, serviceToken)
-        result <- secretApi.getSecret(request).asET
-      yield result
-
-      eitherT.value
-    }.asserting { either =>
-      assert(either.isRight, s"Expected Right but got $either")
-      either.foreach { response =>
-        info(s"✅ 读取成功: ${response.secret.secretName}")
-        info(s"   Value: ${response.secret.secretValue.getOrElse("<空>")}")
-        response.secret.workspace.foreach(w => info(s"   Workspace: $w"))
-        response.secret.environment.foreach(e => info(s"   Environment: $e"))
+    EmberClientBuilder.default[IO].build
+      .use { client =>
+        given Client[IO] = client
+        val eitherT =
+          for
+            logger <- Slf4jLogger.fromClass[IO](classOf[SecretApiFlatSpec]).asET
+            given Logger[IO] = logger
+            secretApi = SecretApi[IO](infisicalUri, serviceToken)
+            secret <- secretApi.getSecret(request).asET.log("SecretApiFlatSpec#getSecret", request.some)
+          yield
+            secret
+        eitherT.value
       }
-    }
+      .asserting(either => assert(either.isRight))
   }
 
 end SecretApiFlatSpec

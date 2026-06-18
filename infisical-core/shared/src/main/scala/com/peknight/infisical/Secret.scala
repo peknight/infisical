@@ -7,8 +7,9 @@ import com.peknight.codec.cursor.Cursor
 import com.peknight.codec.sum.*
 
 case class Secret(
-                   secretName: SecretName,
+                   secretKey: SecretName,
                    id: Option[SecretId] = None,
+                   `_id`: Option[SecretId] = None,
                    `type`: Option[SecretType] = None,
                    secretValue: Option[SecretValue] = None,
                    version: Option[Int] = None,

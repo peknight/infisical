@@ -8,7 +8,7 @@ import com.peknight.codec.http4s.circe.instances.entityDecoder.given
 import com.peknight.codec.http4s.circe.instances.entityEncoder.given
 import com.peknight.codec.http4s.instances.segmentEncoder.given
 import com.peknight.infisical.api.secret.*
-import com.peknight.infisical.{SecretName, api}
+import com.peknight.infisical.{SecretKey, api}
 import com.peknight.query.config.given
 import com.peknight.query.http4s.syntax.id.uri.withQuery
 import org.http4s.Method.{DELETE, GET, PATCH, POST}
@@ -22,8 +22,8 @@ class SecretApi[F[_]: Concurrent](baseUri: Uri, token: Token)(using client: Clie
 
   private val headers: Headers = Headers(token.toHeader)
 
-  private def secretsUri(secretName: SecretName): Uri = baseUri / "api" / "v4" / "secrets" / secretName
-  private def secretsUri(secretName: SecretName, query: SecretQuery): Uri =
+  private def secretsUri(secretName: SecretKey): Uri = baseUri / "api" / "v4" / "secrets" / secretName
+  private def secretsUri(secretName: SecretKey, query: SecretQuery): Uri =
     secretsUri(secretName).withQuery[SecretQuery](query)
 
   def createSecret(request: CreateSecretRequest): F[SecretResponse] =

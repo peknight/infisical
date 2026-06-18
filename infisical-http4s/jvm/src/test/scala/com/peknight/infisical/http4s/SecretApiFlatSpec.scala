@@ -6,7 +6,7 @@ import cats.syntax.option.*
 import com.peknight.auth.Token
 import com.peknight.error.syntax.applicativeError.asET
 import com.peknight.infisical.api.secret.GetSecretRequest
-import com.peknight.infisical.{EnvironmentSlug, ProjectId, SecretName, SecretPath}
+import com.peknight.infisical.{EnvironmentSlug, ProjectId, SecretKey, SecretPath}
 import com.peknight.logging.syntax.eitherT.log
 import org.http4s.client.Client
 import org.http4s.ember.client.EmberClientBuilder
@@ -34,7 +34,7 @@ class SecretApiFlatSpec extends AsyncFlatSpec with AsyncIOSpec:
   val secretPath = SecretPath("/test")
 
   "Infisical SecretApi getSecret" should "successfully read a secret from /test path" in {
-    val testSecretName = SecretName("TEST_TOKEN")
+    val testSecretName = SecretKey("TEST_TOKEN")
     val request = GetSecretRequest(testSecretName, projectId, environment, secretPath.some)
     EmberClientBuilder.default[IO].build
       .use { client =>

@@ -8,7 +8,7 @@ import com.peknight.codec.sum.*
 import com.peknight.infisical.*
 
 case class UpdateSecretRequest(
-                                secretName: SecretName,
+                                secretName: SecretKey,
                                 projectId: ProjectId,
                                 environment: EnvironmentSlug,
                                 secretPath: Option[SecretPath] = None,

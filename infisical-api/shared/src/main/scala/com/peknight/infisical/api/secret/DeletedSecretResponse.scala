@@ -9,6 +9,6 @@ import com.peknight.infisical.Secret
 
 case class DeletedSecretResponse(secret: Secret)
 object DeletedSecretResponse:
-  given codecDeletedSecretResponse[F[_]: Monad, S: {ObjectType, NullType, NumberType, StringType, Show}]
+  given codecDeletedSecretResponse[F[_]: Monad, S: {ObjectType, NullType, ArrayType, BooleanType, NumberType, StringType, Show}]
   : Codec[F, S, Cursor[S], DeletedSecretResponse] = Codec.derived[F, S, DeletedSecretResponse]
 end DeletedSecretResponse

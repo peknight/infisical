@@ -5,9 +5,9 @@ import com.peknight.codec.Codec
 import com.peknight.codec.config.given
 import com.peknight.codec.cursor.Cursor
 import com.peknight.codec.sum.{NullType, ObjectType, StringType}
-import com.peknight.infisical.{EnvironmentSlug, ProjectId, SecretName, SecretPath}
+import com.peknight.infisical.{EnvironmentSlug, ProjectId, SecretKey, SecretPath}
 
-case class GetSecretRequest(secretName: SecretName, projectId: ProjectId, environment: EnvironmentSlug,
+case class GetSecretRequest(secretName: SecretKey, projectId: ProjectId, environment: EnvironmentSlug,
                             secretPath: Option[SecretPath] = None):
   def query: SecretQuery = SecretQuery(projectId, environment, secretPath)
 end GetSecretRequest

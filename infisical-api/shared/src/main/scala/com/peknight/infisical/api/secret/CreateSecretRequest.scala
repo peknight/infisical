@@ -8,7 +8,7 @@ import com.peknight.codec.sum.*
 import com.peknight.infisical.*
 
 case class CreateSecretRequest(
-                                secretName: SecretName,
+                                secretName: SecretKey,
                                 secretValue: SecretValue,
                                 projectId: ProjectId,
                                 environment: EnvironmentSlug,

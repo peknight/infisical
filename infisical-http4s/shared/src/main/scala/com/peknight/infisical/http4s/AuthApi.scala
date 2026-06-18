@@ -1,16 +1,17 @@
-package com.peknight.infisical.auth.http4s
+package com.peknight.infisical.http4s
 
 import cats.effect.Concurrent
 import com.peknight.codec.circe.sum.jsonType.given
 import com.peknight.codec.http4s.circe.instances.entityDecoder.given
 import com.peknight.codec.http4s.circe.instances.entityEncoder.given
-import com.peknight.infisical.auth.api.{UniversalAuthLoginRequest, UniversalAuthLoginResponse}
+import com.peknight.infisical.api
+import com.peknight.infisical.api.auth.{UniversalAuthLoginRequest, UniversalAuthLoginResponse}
 import org.http4s.Method.POST
 import org.http4s.Uri
 import org.http4s.client.Client
 import org.http4s.client.dsl.Http4sClientDsl
 
-class AuthApi[F[_]: Concurrent](baseUri: Uri)(using client: Client[F]) extends com.peknight.infisical.auth.api.AuthApi[F]:
+class AuthApi[F[_]: Concurrent](baseUri: Uri)(using client: Client[F]) extends api.AuthApi[F]:
   private val dsl: Http4sClientDsl[F] = Http4sClientDsl[F]
   import dsl.*
 

@@ -19,8 +19,6 @@ lazy val infisicalCore = (crossProject(JVMPlatform, JSPlatform) in file("infisic
   .settings(crossDependencies(
     peknight.auth,
     peknight.codec,
-    peknight.error,
-    peknight.query,
   ))
 
 lazy val infisicalApi = (crossProject(JVMPlatform, JSPlatform) in file("infisical-api"))

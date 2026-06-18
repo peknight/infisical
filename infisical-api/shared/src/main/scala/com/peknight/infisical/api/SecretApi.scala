@@ -1,4 +1,6 @@
-package com.peknight.infisical.secret.api
+package com.peknight.infisical.api
+
+import com.peknight.infisical.api.secret.*
 
 trait SecretApi[F[_]]:
   def createSecret(request: CreateSecretRequest): F[SecretResponse]

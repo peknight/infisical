@@ -1,20 +1,20 @@
-package com.peknight.infisical.secret.api
+package com.peknight.infisical.api.secret
 
 import cats.{Monad, Show}
 import com.peknight.codec.Codec
+import com.peknight.codec.config.given
 import com.peknight.codec.cursor.Cursor
 import com.peknight.codec.sum.*
-import com.peknight.infisical.config.given
-import com.peknight.infisical.{EnvironmentSlug, ProjectId, SecretName, SecretPath, SecretType, SecretValue}
+import com.peknight.infisical.*
 
 case class CreateSecretRequest(
                                 secretName: SecretName,
+                                secretValue: SecretValue,
                                 projectId: ProjectId,
                                 environment: EnvironmentSlug,
-                                secretPath: Option[SecretPath] = None,
-                                secretValue: SecretValue,
                                 `type`: SecretType = SecretType.shared,
-                                tagIds: Option[List[String]] = None,
+                                secretPath: Option[SecretPath] = None,
+                                tagIds: Option[List[TagId]] = None,
                                 secretComment: Option[String] = None
                               )
 object CreateSecretRequest:

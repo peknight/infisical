@@ -8,7 +8,7 @@ import com.peknight.codec.http4s.circe.instances.entityDecoder.given
 import com.peknight.codec.http4s.circe.instances.entityEncoder.given
 import com.peknight.codec.http4s.instances.segmentEncoder.given
 import com.peknight.infisical.api.secret.*
-import com.peknight.infisical.{SecretKey, api}
+import com.peknight.infisical.{Result, SecretKey, api}
 import com.peknight.query.config.given
 import com.peknight.query.http4s.syntax.id.uri.withQuery
 import org.http4s.Method.{DELETE, GET, PATCH, POST}
@@ -16,25 +16,26 @@ import org.http4s.client.Client
 import org.http4s.client.dsl.Http4sClientDsl
 import org.http4s.{Headers, Uri}
 
-class SecretApi[F[_]: Concurrent](baseUri: Uri, token: Token)(using client: Client[F]) extends api.SecretApi[F]:
+class SecretApi[F[_]](baseUri: Uri, token: Token)(using client: Client[F], concurrent: Concurrent[F]) extends api.SecretApi[F]:
   private val dsl: Http4sClientDsl[F] = Http4sClientDsl[F]
   import dsl.*
 
   private val headers: Headers = Headers(token.toHeader)
 
   private def secretsUri(secretName: SecretKey): Uri = baseUri / "api" / "v4" / "secrets" / secretName
+
   private def secretsUri(secretName: SecretKey, query: SecretQuery): Uri =
     secretsUri(secretName).withQuery[SecretQuery](query)
 
-  def createSecret(request: CreateSecretRequest): F[SecretResponse] =
-    client.run(POST(request, secretsUri(request.secretName), headers)).use(_.as[SecretResponse])
+  def createSecret(request: CreateSecretRequest): F[Result[SecretResponse]] =
+    client.run(POST(request, secretsUri(request.secretName), headers)).use(_.as[Result[SecretResponse]])
 
-  def getSecret(request: GetSecretRequest): F[SecretResponse] =
-    client.run(GET(secretsUri(request.secretName, request.query), headers)).use(_.as[SecretResponse])
+  def getSecret(request: GetSecretRequest): F[Result[SecretResponse]] =
+    client.run(GET(secretsUri(request.secretName, request.query), headers)).use(_.as[Result[SecretResponse]])
 
-  def updateSecret(request: UpdateSecretRequest): F[SecretResponse] =
-    client.run(PATCH(request, secretsUri(request.secretName), headers)).use(_.as[SecretResponse])
+  def updateSecret(request: UpdateSecretRequest): F[Result[SecretResponse]] =
+    client.run(PATCH(request, secretsUri(request.secretName), headers)).use(_.as[Result[SecretResponse]])
 
-  def deleteSecret(request: DeleteSecretRequest): F[DeletedSecretResponse] =
-    client.run(DELETE(secretsUri(request.secretName, request.query), headers)).use(_.as[DeletedSecretResponse])
+  def deleteSecret(request: DeleteSecretRequest): F[Result[DeletedSecretResponse]] =
+    client.run(DELETE(secretsUri(request.secretName, request.query), headers)).use(_.as[Result[DeletedSecretResponse]])
 end SecretApi

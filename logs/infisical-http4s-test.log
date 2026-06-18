@@ -83,3 +83,32 @@ org.http4s.InvalidMessageBodyFailure: Invalid message body: Could not decode JSO
 	at rethrow @ org.http4s.Media$InvariantOps$.as$extension(Media.scala:75)
 	at >>$extension @ org.typelevel.keypool.KeyPool$Builder.keepRunning$2(KeyPool.scala:337)
 Caused by: DecodingFailure at .secret.secretName: Missing required field
+2026-06-18T14:56:33.828+08:00|            io-compute-5|ERROR|      c.p.i.http4s.SecretApiFlatSpec||SecretApiFlatSpec#getSecret|870millis#870860571|InvalidMessageBodyFailure|InvalidMessageBodyFailure: Invalid message body: Could not decode JSON: {
+  "reqId" : "req-F7lgSYK8ebzOBd",
+  "statusCode" : 404,
+  "message" : "Secret with name 'TEST_TOKEN1' not found",
+  "error" : "NotFound"
+}||GetSecretRequest(SecretKey(TEST_TOKEN1),ProjectId(e1bd9423-2ba2-456f-96a8-e78893991237),EnvironmentSlug(dev),Some(SecretPath(/test)))||
+org.http4s.InvalidMessageBodyFailure: Invalid message body: Could not decode JSON: {
+  "reqId" : "req-F7lgSYK8ebzOBd",
+  "statusCode" : 404,
+  "message" : "Secret with name 'TEST_TOKEN1' not found",
+  "error" : "NotFound"
+}
+	at org.http4s.InvalidMessageBodyFailure$.apply(MessageFailure.scala:118)
+	at org.http4s.circe.CirceInstances$.org$http4s$circe$CirceInstances$$$jsonDecodeErrorHelper(CirceInstances.scala:284)
+	at org.http4s.circe.CirceInstances$.defaultJsonDecodeError$$anonfun$1(CirceInstances.scala:271)
+	at org.http4s.circe.CirceInstances.jsonOfWithMediaHelper$$anonfun$1$$anonfun$1(CirceInstances.scala:117)
+	at scala.util.Either.fold(Either.scala:201)
+	at org.http4s.circe.CirceInstances.jsonOfWithMediaHelper$$anonfun$1(CirceInstances.scala:118)
+	at cats.data.EitherT.flatMap$$anonfun$1(EitherT.scala:446)
+	at apply$extension @ org.http4s.DecodeResult$.success(DecodeResult.scala:28)
+	at subflatMap @ org.http4s.circe.CirceInstances.jsonDecoderByteBufferImpl(CirceInstances.scala:65)
+	at flatMap @ com.peknight.infisical.http4s.SecretApiFlatSpec.testFun$proxy1$1$$anonfun$1(SecretApiFlatSpec.scala:44)
+	at rethrow @ org.http4s.Media$InvariantOps$.as$extension(Media.scala:75)
+	at >>$extension @ org.typelevel.keypool.KeyPool$Builder.keepRunning$2(KeyPool.scala:337)
+Caused by: DecodingFailure at .secret: Wrong type, expecting object
+2026-06-18T15:28:48.202+08:00|            io-compute-3|ERROR|      c.p.i.http4s.SecretApiFlatSpec||SecretApiFlatSpec#getSecret|801millis#801756525|NotFound|Secret with name 'TEST_TOKEN1' not found||GetSecretRequest(SecretKey(TEST_TOKEN1),ProjectId(e1bd9423-2ba2-456f-96a8-e78893991237),EnvironmentSlug(dev),Some(SecretPath(/test)))||
+2026-06-18T15:35:13.685+08:00|            io-compute-0|ERROR|      c.p.i.http4s.SecretApiFlatSpec||SecretApiFlatSpec#getSecret|786millis#786175411|NotFound|Secret with name 'TEST_TOKEN1' not found||GetSecretRequest(SecretKey(TEST_TOKEN1),ProjectId(e1bd9423-2ba2-456f-96a8-e78893991237),EnvironmentSlug(dev),Some(SecretPath(/test)))||
+2026-06-18T15:40:17.539+08:00|            io-compute-4|INFO |      c.p.i.http4s.SecretApiFlatSpec||SecretApiFlatSpec#loadTestToken|767millis#767503381|Success|Success|||123456|
+2026-06-18T15:40:53.749+08:00|            io-compute-2|INFO |      c.p.i.http4s.SecretApiFlatSpec||SecretApiFlatSpec#loadTestToken|767millis#767566488|Success|Success|||TestToken(<SecretValue>)|

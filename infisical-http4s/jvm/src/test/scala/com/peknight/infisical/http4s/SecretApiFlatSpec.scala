@@ -1,16 +1,17 @@
 package com.peknight.infisical.http4s
 
+import cats.data.EitherT
 import cats.effect.IO
 import cats.effect.testing.scalatest.AsyncIOSpec
 import cats.syntax.option.*
-import com.peknight.auth.Token
+import com.peknight.api.syntax.result.asET as resultAsET
+import com.peknight.codec.Decoder
 import com.peknight.error.syntax.applicativeError.asET
+import com.peknight.infisical.SecretKey
 import com.peknight.infisical.api.secret.GetSecretRequest
-import com.peknight.infisical.{EnvironmentSlug, ProjectId, SecretKey, SecretPath}
 import com.peknight.logging.syntax.eitherT.log
 import org.http4s.client.Client
 import org.http4s.ember.client.EmberClientBuilder
-import org.http4s.implicits.uri
 import org.scalatest.flatspec.AsyncFlatSpec
 import org.typelevel.log4cats.Logger
 import org.typelevel.log4cats.slf4j.Slf4jLogger
@@ -27,15 +28,10 @@ import org.typelevel.log4cats.slf4j.Slf4jLogger
  */
 class SecretApiFlatSpec extends AsyncFlatSpec with AsyncIOSpec:
 
-  val infisicalUri = uri"https://infisical.peknight.com"
-  val serviceToken = Token.Bearer("st.ac2c3ca4-8d34-4cc5-938c-9d07138d2acd.c6b15a5f5cf92ead736cfa6ab33b8601.76a1fd2d52a5e0ad6c75b880a40fd89e")
-  val projectId = ProjectId("e1bd9423-2ba2-456f-96a8-e78893991237")
-  val environment = EnvironmentSlug("dev")
-  val secretPath = SecretPath("/test")
-
   "Infisical SecretApi getSecret" should "successfully read a secret from /test path" in {
     val testSecretName = SecretKey("TEST_TOKEN")
-    val request = GetSecretRequest(testSecretName, projectId, environment, secretPath.some)
+    val request = GetSecretRequest(testSecretName, secretContext.projectId, secretContext.environment,
+      secretContext.secretPath)
     EmberClientBuilder.default[IO].build
       .use { client =>
         given Client[IO] = client
@@ -43,10 +39,26 @@ class SecretApiFlatSpec extends AsyncFlatSpec with AsyncIOSpec:
           for
             logger <- Slf4jLogger.fromClass[IO](classOf[SecretApiFlatSpec]).asET
             given Logger[IO] = logger
-            secretApi = SecretApi[IO](infisicalUri, serviceToken)
-            secret <- secretApi.getSecret(request).asET.log("SecretApiFlatSpec#getSecret", request.some)
+            secretApi = SecretApi[IO](secretContext.infisicalUri, secretContext.serviceToken)
+            secret <- secretApi.getSecret(request).resultAsET.log("SecretApiFlatSpec#getSecret", request.some)
           yield
             secret
+        eitherT.value
+      }
+      .asserting(either => assert(either.isRight))
+  }
+
+  "Infisical SecretApi loadTestToken" should "successfully load by key" in {
+    EmberClientBuilder.default[IO].build
+      .use { client =>
+        given Client[IO] = client
+        val eitherT =
+          for
+            logger <- Slf4jLogger.fromClass[IO](classOf[SecretApiFlatSpec]).asET
+            given Logger[IO] = logger
+            testToken <- EitherT(Decoder.load[IO, TestToken]()).log[Unit]("SecretApiFlatSpec#loadTestToken")
+          yield
+            testToken
         eitherT.value
       }
       .asserting(either => assert(either.isRight))

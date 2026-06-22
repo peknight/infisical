@@ -17,10 +17,11 @@ lazy val infisical = (project in file("."))
 lazy val infisicalCore = (crossProject(JVMPlatform, JSPlatform) in file("infisical-core"))
   .settings(name := "infisical-core")
   .settings(crossDependencies(
-    peknight.auth,
     peknight.codec.effect,
     peknight.codec.http4s,
     peknight.api,
+    peknight.app,
+    peknight.auth,
   ))
 
 lazy val infisicalApi = (crossProject(JVMPlatform, JSPlatform) in file("infisical-api"))

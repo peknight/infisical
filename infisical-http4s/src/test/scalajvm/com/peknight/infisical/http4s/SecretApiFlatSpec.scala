@@ -63,5 +63,4 @@ class SecretApiFlatSpec extends AsyncFlatSpec with AsyncIOSpec:
       }
       .asserting(either => assert(either.isRight))
   }
-
 end SecretApiFlatSpec
